@@ -6,11 +6,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 
 import com.sniperzciinema.Main;
 import com.sniperzciinema.Powerups.Powerups.BluePowerup;
+import com.sniperzciinema.Powerups.Powerups.GreenPowerup;
 import com.sniperzciinema.Powerups.Powerups.RedPowerup;
 
 public class PowerupHandler {
@@ -22,9 +24,9 @@ public class PowerupHandler {
 	private boolean magicball;
 	private boolean safetynet;
 	
-	private static HashMap<Integer, Powerup> activatedPowerups = new HashMap<Integer, Powerup>();
+	private static HashMap<String, Powerup> activatedPowerups = new HashMap<String, Powerup>();
 
-	public static HashMap<Integer, Powerup> getActivatedPowerups() {
+	public static HashMap<String, Powerup> getActivatedPowerups() {
 		return activatedPowerups;
 	}
 
@@ -73,7 +75,7 @@ public class PowerupHandler {
 			if (i == 1) {
 				i = r.nextInt(3);
 				if (i == 0)
-					getPowerups().add(new BluePowerup(x, y));
+					getPowerups().add(new GreenPowerup(x, y));
 				else if (i == 1)
 					getPowerups().add(new BluePowerup(x, y));
 				else if (i == 2)
@@ -104,36 +106,64 @@ public class PowerupHandler {
 	}
 
 	/**
-	 * Move all the powerups down(Powerups will only move every other time this
-	 * function is called)
-	 * <p>
-	 * If a powerup is off the screen, it gets added to a list; then that list
-	 * is removed from the initial powerups list; We can't remove well looping
-	 * through them...
+	 * 
+	 * @return if the magic ball powerup is on
 	 */
-	public void moveAll() {
-		ArrayList<Powerup> remove = new ArrayList<Powerup>();
-		for (Powerup powerup : getPowerups()) {
-			powerup.move();
-			if (powerup.getY() > Main.height)
-				remove.add(powerup);
+		public boolean isMagicball() {
+			return magicball;
 		}
-		for (Powerup powerup : remove)
-			getPowerups().remove(powerup);
+/**
+ * 
+ * @return is the net powerup on
+ */
+public boolean isSafetynet() {
+	return safetynet;
+}
+/**
+ * Move all the powerups down(Powerups will only move every other time this
+ * function is called)
+ * <p>
+ * If a powerup is off the screen, it gets added to a list; then that list
+ * is removed from the initial powerups list; We can't remove well looping
+ * through them...
+ */
+public void moveAll() {
+	ArrayList<Powerup> remove = new ArrayList<Powerup>();
+	for (Powerup powerup : getPowerups()) {
+		powerup.move();
+		if (powerup.getY() > Main.height)
+			remove.add(powerup);
+	}
+	for (Powerup powerup : remove)
+		getPowerups().remove(powerup);
+}
+
+	/**
+	 * Reset the powerups
+	 * <p>
+	 * - Deactivate them all
+	 * <p>
+	 * - Reset PowerupHandler
+	 */
+	public void resetPowerups() {
+		if (!PowerupHandler.getActivatedPowerups().isEmpty())
+			for (Entry<String, Powerup> e : PowerupHandler.getActivatedPowerups().entrySet()) {
+				e.getValue().deactivate();
+			}
 	}
 
-	public boolean isMagicball() {
-		return magicball;
-	}
-
-	public void setMagicball(boolean magicball) {
-		this.magicball = magicball;
-	}
-
-	public boolean isSafetynet() {
-		return safetynet;
-	}
-
+	/**
+	 * Set the magicBall powerup
+	 * @param magicball
+	 */
+		public void setMagicball(boolean magicball) {
+			this.magicball = magicball;
+		}
+	
+	/**
+	 * Set the net powerup
+	 * @param safetynet
+	 */
 	public void setSafetynet(boolean safetynet) {
 		this.safetynet = safetynet;
 	}

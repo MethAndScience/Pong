@@ -157,7 +157,7 @@ public class Ball {
 					die();
 				else {
 					moveUp();
-					PowerupHandler.getActivatedPowerups().get(3).deactivate();
+					PowerupHandler.getActivatedPowerups().get("Red").deactivate();
 				}
 
 			// If the ball has collided with any bricks

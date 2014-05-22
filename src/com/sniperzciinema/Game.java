@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Map.Entry;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -13,7 +12,6 @@ import javax.swing.JOptionPane;
 import com.sniperzciinema.Levels.LevelHandler;
 import com.sniperzciinema.Objects.Ball;
 import com.sniperzciinema.Objects.Paddle;
-import com.sniperzciinema.Powerups.Powerup;
 import com.sniperzciinema.Powerups.PowerupHandler;
 
 @SuppressWarnings("serial")
@@ -21,15 +19,19 @@ public class Game extends JLabel {
 
 	public static boolean playing = false;
 
+	/**
+	 * 
+	 * @return the levelHandler
+	 */
+	public static LevelHandler getLevelHandler() {
+		return levelHandler;
+	}
 	private Ball ball;
 	private Paddle paddle;
 	private Sidebar sidebar;
 	public static LevelHandler levelHandler;
+
 	public static PowerupHandler powerupHandler;
-
-	private int score;
-	private int lives;
-
 	/**
 	 * 
 	 * @return the powerup handler
@@ -37,6 +39,10 @@ public class Game extends JLabel {
 	public static PowerupHandler getPowerupHandler() {
 		return powerupHandler;
 	}
+
+	private int score;
+
+	private int lives;
 
 	public Game() {
 
@@ -104,14 +110,6 @@ public class Game extends JLabel {
 	 */
 	public Ball getBall() {
 		return ball;
-	}
-
-	/**
-	 * 
-	 * @return the levelHandler
-	 */
-	public static LevelHandler getLevelHandler() {
-		return levelHandler;
 	}
 
 	/**
@@ -209,16 +207,10 @@ public class Game extends JLabel {
 
 	/**
 	 * Reset the powerups
-	 * <p>
-	 * - Deactivate them all
-	 * <p>
-	 * - Reset PowerupHandler
 	 */
 	private void resetPowerups() {
-		if (!PowerupHandler.getActivatedPowerups().isEmpty())
-			for (Entry<Integer, Powerup> e : PowerupHandler.getActivatedPowerups().entrySet()) {
-				e.getValue().deactivate();
-			}
+		if(getPowerupHandler() != null)
+			getPowerupHandler().resetPowerups();	
 		powerupHandler = new PowerupHandler();
 	}
 

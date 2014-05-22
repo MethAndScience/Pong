@@ -33,7 +33,7 @@ public class Main {
 
 		game.setIcon(new ImageIcon(Main.class.getResource("/com/sniperzciinema/Image/Background.jpg")));
 		frame.getContentPane().add(game);
-		frame.setSize(width, height);
+		frame.setBounds(5, 5, width, height);
 		frame.setVisible(true);
 
 		// Start the game

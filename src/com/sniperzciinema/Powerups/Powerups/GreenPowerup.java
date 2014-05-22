@@ -6,11 +6,12 @@ import com.sniperzciinema.Powerups.Powerup;
 public class GreenPowerup extends Powerup {
 
 	private int width;
-	private static int id = 1;
+	private static String name = "Green";
 	private static int time = 20;
 
 	public GreenPowerup(int x, int y) {
-		super(id, "/com/sniperzciinema/Image/GreenPowerup.png", time, x, y);
+		super(name, "/com/sniperzciinema/Image/GreenPowerup.png", time, x, y);
+		
 		width = Main.game.getPaddle().getWidth();
 	}
 
@@ -19,7 +20,8 @@ public class GreenPowerup extends Powerup {
 	 */
 	@Override
 	public void activation() {
-		Main.game.getPaddle().setWidth(width + (width));
+		Main.game.getPaddle().setX(Main.game.getPaddle().getX() - (width/2));
+		Main.game.getPaddle().setWidth(width*2);
 	}
 
 	/**
@@ -27,6 +29,7 @@ public class GreenPowerup extends Powerup {
 	 */
 	@Override
 	public void deactivation() {
+		Main.game.getPaddle().setX(Main.game.getPaddle().getX() + (width/2));
 		Main.game.getPaddle().setWidth(width);
 	}
 

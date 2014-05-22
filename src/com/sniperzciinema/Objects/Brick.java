@@ -14,8 +14,8 @@ public class Brick {
 	private int lives;
 
 	public Brick(int x, int y, int lives) {
-		this.x = x * width + 5;
-		this.y = y * height + 5;
+		this.x = x * width;
+		this.y = y * height;
 		this.lives = lives;
 
 	}

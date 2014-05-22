@@ -190,4 +190,12 @@ public class Paddle {
 		Paddle.width = width;
 	}
 
+	/**
+	 * Set the x location
+	 * @param x
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+
 }

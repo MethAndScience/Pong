@@ -5,11 +5,11 @@ import com.sniperzciinema.Powerups.Powerup;
 
 public class RedPowerup extends Powerup {
 
-	private static int id = 3;
+	private static String name = "Red";
 	private static int time = 60;
 
 	public RedPowerup(int x, int y) {
-		super(id, "/com/sniperzciinema/Image/RedPowerup.png", time, x, y);
+		super(name, "/com/sniperzciinema/Image/RedPowerup.png", time, x, y);
 	}
 
 	/**

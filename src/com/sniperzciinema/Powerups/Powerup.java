@@ -16,21 +16,25 @@ public abstract class Powerup {
 	class DeActivateTask extends TimerTask {
 		@Override
 		public void run() {
-			deactivate();
+			if (timeleft != 0)
+				timeleft--;
+			else
+				deactivate();
 		}
 	}
 
 	private Image image;
 	private long time;
+	private long timeleft;
 	private int y, x;
 	private boolean hide;
 	private Timer timer;
-	private int id;
+	private String name;
 
 	private boolean move;
 
-	public Powerup(int id, String imagePath, long time, int x, int y) {
-		this.id = id;
+	public Powerup(String name, String imagePath, long time, int x, int y) {
+		this.name = name;
 		ImageIcon i = new ImageIcon(Main.class.getResource(imagePath));
 		image = i.getImage();
 		this.time = time;
@@ -39,6 +43,12 @@ public abstract class Powerup {
 	}
 
 	/**
+	 * @return the image
+	 */
+	public Image getImage(){
+		return this.image;
+	}
+	/**
 	 * When a powerup is activated, check if it's already activated, and if so
 	 * just set the time of the current powerup Otherwise it activates a new
 	 * powerup and starts the timer
@@ -46,12 +56,13 @@ public abstract class Powerup {
 	 * Either way causes the powerup picture to hide
 	 */
 	public void activate() {
-		if (PowerupHandler.getActivatedPowerups().containsKey(id)) {
-			PowerupHandler.getActivatedPowerups().get(id).setTime(time);
+		if (PowerupHandler.getActivatedPowerups().containsKey(name)) {
+			PowerupHandler.getActivatedPowerups().get(name).setTimeLeft(time);
 		} else {
-			PowerupHandler.getActivatedPowerups().put(id, this);
+			PowerupHandler.getActivatedPowerups().put(name, this);
 			activation();
 			startTimer();
+			timeleft = time;
 		}
 		hide();
 	}
@@ -69,7 +80,7 @@ public abstract class Powerup {
 	public void deactivate() {
 		deactivation();
 		timer.cancel();
-		PowerupHandler.getActivatedPowerups().remove(id);
+		PowerupHandler.getActivatedPowerups().remove(name);
 	}
 
 	/**
@@ -94,6 +105,14 @@ public abstract class Powerup {
 	 */
 	public Rectangle getBounds() {
 		return new Rectangle(x, y, 20, 8);
+	}
+
+	/**
+	 * 
+	 * @return the time left for this powerup
+	 */
+	public long getTimeLeft() {
+		return this.timeleft;
 	}
 
 	/**
@@ -131,11 +150,20 @@ public abstract class Powerup {
 	}
 
 	/**
+	 * Set the time left for the powerup
+	 * 
+	 * @param i
+	 */
+	public void setTimeLeft(long i) {
+		this.timeleft = i;
+	}
+
+	/**
 	 * Start the timer
 	 */
 	public void startTimer() {
 		timer = new Timer();
-		timer.schedule(new DeActivateTask(), time * 1000);
+		timer.scheduleAtFixedRate(new DeActivateTask(), 0, 1 * 1000);
 
 	}
 }
